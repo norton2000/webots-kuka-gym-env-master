@@ -40,11 +40,11 @@ bbo_sigma = bbo_sigma_max * np.hstack(
         for x in bbo_sigma_joint_scales
     ]
 )  # constant sample variance
-bbo_sigma_decay_amp = 0.0  # variable sample variance          #Default 0.0
+bbo_sigma_decay_amp = 0.01  # variable sample variance          #Default 0.0
 bbo_sigma_decay_start = 0                                       #Default 0
 bbo_sigma_decay_period = 0.025                                  #Default 0.01
 init_gap = 10                                                   #Default 10
-continue_learning = True                                        #False when start a new Learning
+continue_learning = False                                       #False when start a new Learning
 
 # YOUBOT learning_parameters
 dist_dev_alpha = 0.04                                           #Default 0.028
