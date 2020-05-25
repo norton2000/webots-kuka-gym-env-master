@@ -24,10 +24,10 @@ dmp_sigma = 0.05  # standard deviation of each parameters 0.05
 
 # BBO parameters
 bbo_lmb = 0.005# softmax temperature
-bbo_epochs = 50
+bbo_epochs = 150
 bbo_episodes = 20
 bbo_num_dmps = 7 #Original Version 9
-bbo_sigma_max = 0.2                 # Default 0.2
+bbo_sigma_max = 0.2                # Default 0.2
 bbo_sigma_arm_scale = 0.001
 bbo_sigma_joint_scales =  [bbo_sigma_arm_scale,
                            bbo_sigma_arm_scale,
@@ -40,7 +40,7 @@ bbo_sigma = bbo_sigma_max * np.hstack(
         for x in bbo_sigma_joint_scales
     ]
 )  # constant sample variance
-bbo_sigma_decay_amp = 0.01  # variable sample variance          #Default 0.0
+bbo_sigma_decay_amp = 0.01 #0.015  # variable sample variance         #Default 0.0
 bbo_sigma_decay_start = 0                                       #Default 0
 bbo_sigma_decay_period = 0.025                                  #Default 0.01
 init_gap = 10                                                   #Default 10
@@ -50,12 +50,12 @@ continue_learning = False                                       #False when star
 dist_dev_alpha = 0.04                                           #Default 0.028
 dist_dev_beta = 0.1                                             #Default 0.1
 dist_dev_gamma = 0.012                                          #Default 0.012
-alpha = 1e7 # floor distance                                    #Default: 1e4
-beta = 1      # finger_distance                                 #Default: 1
-gamma = 1e7 # touch * finger_distance                           #Default: 1e8
-max_rew = 5e5
+alpha = 1e4 # floor distance                                    #Default: 1e4
+beta = 10      # finger_distance                                 #Default: 1
+gamma = 1e6 # touch * finger_distance                           #Default: 1e8
+max_rew = 5e10
 sigma_moving_average = True
-sigma_moving_average_h = 0.2
+sigma_moving_average_h = 0.2                                    #Default: 0.2
 
 object_to_grasp = 'otre'
 # object

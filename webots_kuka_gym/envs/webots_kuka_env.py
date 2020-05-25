@@ -18,7 +18,8 @@ class WebotsKukaEnv(gym.Env):
         self.beta = beta
         self.gamma = gamma  #Added
 
-        self.desired_pos = np.array([0.42, 1.0, 0])
+        #self.desired_pos = np.array([0.42, 1.0, 0])
+        self.desired_pos = np.array([-0.3, 0.43, 0.103])
 
         self._supervisor = Supervisor()
         self._timestep = 64
@@ -30,7 +31,7 @@ class WebotsKukaEnv(gym.Env):
         self._objects = {}
         #self.finger_names = "FINGER"
         #self.finger = self._supervisor.getFromDef("FINGER")
-        self.finger_names = ["FINGER1", "FINGER2"]
+        self.finger_names = ["TouchSensor1", "TouchSensor2"]
         self.fingers = {}
 
         for fin in self.finger_names:
@@ -122,10 +123,10 @@ class WebotsKukaEnv(gym.Env):
     #Modified
     def object_finger_distance(self, object):
         
-        finger_pos_00 = self.fingers["FINGER1"].getPosition()
+        finger_pos_00 = self.fingers["TouchSensor1"].getPosition()
         finger_pos_00_array = np.array(finger_pos_00)
 
-        finger_pos_01 = self.fingers["FINGER2"].getPosition()
+        finger_pos_01 = self.fingers["TouchSensor2"].getPosition()
         finger_pos_01_array = np.array(finger_pos_01)
 
         '''
@@ -237,7 +238,7 @@ class WebotsKukaEnv(gym.Env):
 
 
     def reset(self):
-        print("Reset")
+        #print("Reset")
         #if(self._num_rew != 0):
             #print(self._touch/self._num_rew)
 
