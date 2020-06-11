@@ -139,7 +139,11 @@ class BBO(object):
 
         curr_sigma = Sigma.copy()
         if self.is_sigma_moving_average_active:
-            curr_sigma *= (1 - np.tanh(self.sigma_moving_average/self.max_sk_rew))
+            #@curr_sigma *= (1 - np.tanh(self.sigma_moving_average/self.max_sk_rew))
+            #curr_sigma *= (1 - np.tanh(0.05*(self.sigma_moving_average/self.max_sk_rew)))
+            #curr_sigma *= (1 - np.tanh(0.01*(self.sigma_moving_average/self.max_sk_rew)))
+            #curr_sigma *= (1.001 - np.tanh(1*(self.sigma_moving_average/self.max_sk_rew)))
+            curr_sigma *= (1.000 - np.tanh(1*(self.sigma_moving_average/self.max_sk_rew)))
             print(self.sigma_moving_average)
             print(curr_sigma)
 
@@ -159,13 +163,25 @@ class BBO(object):
         self.theta += np.sum(self.eps * probs, 0)
 
     def set_weights(self, target_rollout):
+        
+        #@
         rng = self.num_dmp_params + 2
+        for idx, dmp in enumerate(self.dmps):
+            #dmp[0].generate_weights(target_rollout[idx, :])
+            dmp_theta = self.theta[(idx * rng) : ((idx) * rng)]
+            #dmp_theta[1:0] = dmp[0].theta.ravel()
+            #dmp_theta[0] = dmp[0].s
+            #dmp_theta[-1] = dmp[0].g
+
+        #rng = self.num_dmp_params + 2
+        '''
         for idx, dmp in enumerate(self.dmps):
             dmp[0].generate_weights(target_rollout[idx, :])
             dmp_theta = self.theta[(idx * rng) : ((idx + 1) * rng)]
             dmp_theta[1:-1] = dmp[0].theta.ravel()
             dmp_theta[0] = dmp[0].s
             dmp_theta[-1] = dmp[0].g
+        '''
 
     def rollouts(self, thetas):
         """ Produce a rollout

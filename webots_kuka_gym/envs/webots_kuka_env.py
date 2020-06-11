@@ -18,8 +18,8 @@ class WebotsKukaEnv(gym.Env):
         self.beta = beta
         self.gamma = gamma  #Added
 
-        #self.desired_pos = np.array([0.42, 1.0, 0])
-        self.desired_pos = np.array([-0.3, 0.43, 0.103])
+        self.desired_pos = np.array([0.42, 1.0, 0])
+        #self.desired_pos = np.array([-0.3, 0.43, 0.103])
 
         self._supervisor = Supervisor()
         self._timestep = 64
@@ -68,6 +68,12 @@ class WebotsKukaEnv(gym.Env):
 
         # self.camera = self._supervisor.getCamera("camera");
         # self.camera.enable(self._timestep);
+
+        self._floor = 0
+        self._finger = 0
+        self._touch = 0
+
+        self._i = 0
 
 
 ###### UTIL FUNCTIONS - START ######
@@ -148,8 +154,10 @@ class WebotsKukaEnv(gym.Env):
         obj_pos_array = np.array(obj_pos)
         
         finger_distances = [
-            np.linalg.norm(finger_pos_00_array - obj_pos_array),
-            np.linalg.norm(finger_pos_01_array - obj_pos_array),
+            #np.linalg.norm(finger_pos_00_array - obj_pos_array + 0.018),
+            #np.linalg.norm(finger_pos_01_array - obj_pos_array + 0.018 ),
+            np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,-0.0019]),
+            np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0,0.0019])
             #np.linalg.norm(finger_pos_array - obj_pos_array),
         ]
 
@@ -185,7 +193,7 @@ class WebotsKukaEnv(gym.Env):
         )
 
         finger_distance = self.beta * np.exp(
-            -(self.object_finger_distance(self._objects) ** 2)
+            -((self.object_finger_distance(self._objects)+0.9) ** 2)
             / (2 * dist_dev_beta ** 2)
         )
 
@@ -197,7 +205,15 @@ class WebotsKukaEnv(gym.Env):
         )
         self._num_rew += 1
         self._touch += touch_distance
-        reward = floor_distance + finger_distance + touch_distance
+
+        #reward = floor_distance + finger_distance + touch_distance
+        reward = finger_distance + touch_distance
+
+        self._floor += floor_distance
+        self._finger += finger_distance
+        self._touch += touch_distance
+
+        self._i += 1
 
         '''
         print("------------------------")
@@ -238,13 +254,17 @@ class WebotsKukaEnv(gym.Env):
 
 
     def reset(self):
+           
         #print("Reset")
-        #if(self._num_rew != 0):
-            #print(self._touch/self._num_rew)
 
-        #self._touch = 0
-        #self._num_rew = 0
-        #print()
+        #@
+        
+        if(self._i != 0):
+            print("floor: ", self._floor, "   finger: ", self._finger, "   touch: ", self._touch)
+        self._i = 0
+        self._floor = 0
+        self._finger = 0
+        self._touch = 0
         self._supervisor.simulationReset()
         self._supervisor.simulationResetPhysics()
         self._supervisor.step(1)
