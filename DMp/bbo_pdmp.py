@@ -243,7 +243,7 @@ class BBO(object):
 
         return Sk
 
-    def iteration(self, explore=True):
+    def iteration(self, explore=False):
         """ Run an iteration
             :param explore: Bool, If the iteration is for training (True)
                 or test (False)
