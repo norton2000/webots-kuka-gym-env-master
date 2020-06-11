@@ -165,14 +165,15 @@ class BBO(object):
     def set_weights(self, target_rollout):
         
         #@
-        rng = self.num_dmp_params + 2
+        '''
+        rng = self.num_dmp_params
         for idx, dmp in enumerate(self.dmps):
-            #dmp[0].generate_weights(target_rollout[idx, :])
+            dmp[0].generate_weights(target_rollout[idx, :])
             dmp_theta = self.theta[(idx * rng) : ((idx) * rng)]
-            #dmp_theta[1:0] = dmp[0].theta.ravel()
-            #dmp_theta[0] = dmp[0].s
-            #dmp_theta[-1] = dmp[0].g
-
+            dmp_theta[1:0] = dmp[0].theta.ravel()
+            dmp_theta[0] = dmp[0].s
+            dmp_theta[-1] = dmp[0].g
+        '''
         #rng = self.num_dmp_params + 2
         '''
         for idx, dmp in enumerate(self.dmps):
@@ -243,7 +244,7 @@ class BBO(object):
 
         return Sk
 
-    def iteration(self, explore=False):#iex
+    def iteration(self, explore=True):#iex
         """ Run an iteration
             :param explore: Bool, If the iteration is for training (True)
                 or test (False)
