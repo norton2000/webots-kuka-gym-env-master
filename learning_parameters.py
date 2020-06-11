@@ -18,14 +18,14 @@ solver_iter = 100
 # DMP parameters
 dmp_num_theta = 10  # number of parameters Default: 10
 dmp_rtime = 20  # number of points to be interpolated
-dmp_stime = 140 #200 #100  # number of simulation's timesteps  Default: 100
+dmp_stime = 120 #200 #100  # number of simulation's timesteps  Default: 100
 dmp_dt = 0.25  # integration time over dmp_rtime
 dmp_sigma = 0.05  # standard deviation of each parameters 0.05
 
 # BBO parameters
 bbo_lmb = 0.005# softmax temperature
-bbo_epochs = 20
-bbo_episodes = 20
+bbo_epochs = 30
+bbo_episodes = 15
 bbo_num_dmps = 7 #Original Version 9
 bbo_sigma_max = 0.2                # Default 0.2
 bbo_sigma_arm_scale = 0.001 #0.001 #0.007 #0.001
@@ -44,7 +44,7 @@ bbo_sigma_decay_amp = 0.1 #0.04 #0.005 #0.007 #0.01 #0.015  # variable sample va
 bbo_sigma_decay_start = 0                                       #Default 0
 bbo_sigma_decay_period = 0.07 #0.03 #0.025 #0.07 #0.04 #0.01 #0.015 #0.025                                  #Default 0.01
 init_gap = 10                                                   #Default 10
-continue_learning = True                                       #False when start a new Learning
+continue_learning = False                                       #False when start a new Learning
 
 # YOUBOT learning_parameters
 dist_dev_alpha = 0.04 #0.3   #0.16 #0.08 #0.04                                           #Default 0.028
