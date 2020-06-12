@@ -156,8 +156,8 @@ class WebotsKukaEnv(gym.Env):
         finger_distances = [
             #np.linalg.norm(finger_pos_00_array - obj_pos_array + 0.018),
             #np.linalg.norm(finger_pos_01_array - obj_pos_array + 0.018 ),
-            np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,-0.019]),
-            np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0,0.019])
+            np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0.07,-0.019]),
+            np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0.07,0.019])
             #np.linalg.norm(finger_pos_array - obj_pos_array),
         ]
 
