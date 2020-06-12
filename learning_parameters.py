@@ -18,14 +18,14 @@ solver_iter = 100
 # DMP parameters
 dmp_num_theta = 10  # number of parameters Default: 10
 dmp_rtime = 20  # number of points to be interpolated
-dmp_stime = 120 #200 #100  # number of simulation's timesteps  Default: 100
+dmp_stime = 40 #200 #100  # number of simulation's timesteps  Default: 100
 dmp_dt = 0.25  # integration time over dmp_rtime
 dmp_sigma = 0.05  # standard deviation of each parameters 0.05
 
 # BBO parameters
 bbo_lmb = 0.005# softmax temperature
-bbo_epochs = 30
-bbo_episodes = 15
+bbo_epochs = 35
+bbo_episodes = 20
 bbo_num_dmps = 7 #Original Version 9
 bbo_sigma_max = 0.2                # Default 0.2
 bbo_sigma_arm_scale = 0.001 #0.001 #0.007 #0.001
