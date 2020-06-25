@@ -52,7 +52,7 @@ dist_dev_beta = 0.4 #0.6   #0.1                                             #Def
 dist_dev_gamma = 0.012 #0.023 #0.012                                          #Default 0.012
 alpha = 1e7 #0.01  #1e4#1e5#1e5 #6e5 #1e4 #1e4 # floor distance                               #Default: 1e4
 beta = 1 #0.02  #0.01#0.01 #0.1 #1 #1 #10     # finger_distance                              #Default: 1
-gamma = 0.6 #0.02#1#1e2 #1e2 #5e6 #1e8 #1e5 # touch * finger_distance                      #Default: 1e8
+gamma = 0.8 #0.02#1#1e2 #1e2 #5e6 #1e8 #1e5 # touch * finger_distance                      #Default: 1e8
 #max_rew = 25#20#5e1 #5e6 #5e5 #5e9                                              #Default: 5e5
 max_rew = 80 #12
 sigma_moving_average = True
@@ -90,8 +90,9 @@ class SimulationManager:
             rollout = np.squeeze(rollouts[episode, :, :])
             rollout = self.init_trj(rollout)
             rollout = filter_limits(scale_to_joints(rollout))
-
+            self.env.savePrecondition()
             self.env.reset()
+            self.env.savePostcondition()
             for t in range(timesteps + self.init_gap):
                 action = rollout[:, t]
                 obs, reward, done, info = self.env.step(action)
