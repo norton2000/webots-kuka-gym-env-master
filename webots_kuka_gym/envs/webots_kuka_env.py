@@ -158,6 +158,8 @@ class WebotsKukaEnv(gym.Env):
             #np.linalg.norm(finger_pos_01_array - obj_pos_array + 0.018 ),
             np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,+0.019]),#-
             np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0,0.019])
+            #np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,+0.0]),#-
+            #np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0,0.0])
             #np.linalg.norm(finger_pos_array - obj_pos_array),
         ]
 
@@ -239,7 +241,7 @@ class WebotsKukaEnv(gym.Env):
 
         # joint_positions = np.array([self.get_joint_function(joint).position[0] for joint in self.joint_names])
         touch_sensors = np.array([np.linalg.norm(self._touch_sensor_object[sensor].getValues()) for sensor in self._touch_sensor_names])   #Commentato da Edo #Modificato da LoLu
-        #print(touch_sensors)
+        print(touch_sensors)
         # obj = self.object_positions[self.object_names[0]] # otre position
         obj = self.object_positions()
         # obj_position = np.array([obj.x, obj.y, obj.z])
@@ -278,3 +280,36 @@ class WebotsKukaEnv(gym.Env):
         pass
 
 ###### GYM FUNCTIONS -   END   ######
+
+    def _objectPositionClassifier(object_position):
+        return true
+
+    def _fingerDistanceClassifier(finger_distance):
+        return true
+
+    def _desiredPosClassifier(desired_pos):
+        return true
+
+    def _touchSensorsClassifier(touch_sensors):
+        return true
+
+    def _jointPositionClassifier(joint_positions):
+        return true
+    
+    def _getValuesFromSensors():
+        obs = self._get_obs()
+        values["objectPosition"] = _objectPositionClassifier(obs["OBJECT_POSITION"])
+        values["fingerDistance"] = _fingerDistanceClassifier(object_finger_distance))
+        values["desiredPos"] = _desiredPosClassifier(self.desired_pos)
+        values["touchSensors"] = _touchSensorsClassifier(obs["TOUCH_SENSORS"])
+        values["jointPosition"] = _jointPositionClassifier(obs["JOINT_POSITIONS"])
+        return values
+
+    # @Aggiunta da Luca
+    def savePreconditions():
+        self._getValuesFromSensors()
+
+
+    # @Aggiunta da Luca
+    def savePostconditions():
+        self._getValuesFromSensors()
