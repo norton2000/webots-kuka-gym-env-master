@@ -44,7 +44,7 @@ bbo_sigma = bbo_sigma_max * np.hstack(
 bbo_sigma_decay_amp = 0.08 #0.04 #0.005 #0.007 #0.01 #0.015  # variable sample variance         #Default 0.0
 bbo_sigma_decay_start = 0                                       #Default 0
 bbo_sigma_decay_period = 0.04 #0.03 #0.025 #0.07 #0.04 #0.01 #0.015 #0.025                                  #Default 0.01
-init_gap = 10                                                   #Default 10
+init_gap = 0                                                   #Default 10
 continue_learning = False                                       #False when start a new Learning
 
 # YOUBOT learning_parameters
@@ -98,7 +98,6 @@ class SimulationManager:
             self.env.reset()
             print("PRE: ")
             pre = self.env.savePreconditions()
-            print(len(pre))
             pre[len(pre)] = True
 
             for t in range(timesteps + self.init_gap):                    
@@ -109,7 +108,7 @@ class SimulationManager:
             
             print("POST: ")
             post = self.env.savePostconditions()
-            post[len(pre)] = True
+            post[len(post)] = True
 
             self.arffPrinter.writeArffLine(pre, "preconditions")
             self.arffPrinter.writeArffLine(post, "effects")

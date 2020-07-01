@@ -27,7 +27,7 @@ class WebotsKukaEnv(gym.Env):
 
         self.objects_initial_positions = {
             "ciambella":[0.53, 0.015, 0],
-            "ball":[0.4, 0.0325, 0],
+            "ball":[0.4, 0.025, 0],
         }
 
         self._supervisor = Supervisor()
@@ -330,6 +330,8 @@ class WebotsKukaEnv(gym.Env):
         obs = self._get_obs()
         values = {}
         i = 0
+        obj_names = self._objects_names
+        obj_names.sort()
         for obj_name in self._objects_names:
             values[i] = self._objectPositionClassifier(self.get_objects_positions()[obj_name], self.objects_initial_positions[obj_name])
             values[i+1] = self._fingerDistanceClassifier(self.object_finger_distance(obj_name))
