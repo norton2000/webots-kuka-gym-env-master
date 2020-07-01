@@ -5,6 +5,7 @@ from gym.utils import seeding
 import numpy as np
 from limits import filter_limits, scale_to_joints
 from learning_parameters import *
+#from ArffPrinter import ArffPrinter
 
 # Import from webots classes
 from controller import Supervisor, Motor, Camera
@@ -17,6 +18,9 @@ class WebotsKukaEnv(gym.Env):
         self.alpha = alpha
         self.beta = beta
         self.gamma = gamma  #Added
+
+        #self.arffPrinter = ArffPrinter(0)
+        #self.arffPrinter.initFiles()
 
         self.desired_pos = np.array([-0.15, 0.195, 0])
         #self.desired_pos = np.array([-0.3, 0.43, 0.103])
@@ -330,18 +334,18 @@ class WebotsKukaEnv(gym.Env):
             values[i] = self._objectPositionClassifier(self.get_objects_positions()[obj_name], self.objects_initial_positions[obj_name])
             values[i+1] = self._fingerDistanceClassifier(self.object_finger_distance(obj_name))
             values[i+2] = self._desiredPosClassifier(self.get_objects_positions()[obj_name], self.desired_pos)
-            values[i+3] = self._touchSensorsClassifier(obs["TOUCH_SENSORS"])
-            i+=4
-        values[i] = self._jointPositionClassifier(obs["JOINT_POSITIONS"])
+            i+=3
+        values[i] = self._touchSensorsClassifier(obs["TOUCH_SENSORS"])
+        values[i+1] = self._jointPositionClassifier(obs["JOINT_POSITIONS"])
         print("GIUNTI: " , obs["JOINT_POSITIONS"])
         print (values)
         return values
 
     # @Aggiunta da Luca
     def savePreconditions(self):
-        self._getValuesFromSensors()
+        return self._getValuesFromSensors()
 
 
     # @Aggiunta da Luca
     def savePostconditions(self):
-        self._getValuesFromSensors()
+        return self._getValuesFromSensors()

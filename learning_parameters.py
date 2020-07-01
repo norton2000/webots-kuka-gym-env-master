@@ -7,6 +7,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import numpy as np
+from ArffPrinter import ArffPrinter
 
 '''
 # Gazebo simulation parameters
@@ -72,6 +73,9 @@ class SimulationManager:
         self.env = env
         self.init_gap = init_gap
 
+        self.arffPrinter = ArffPrinter(0)
+        self.arffPrinter.initFiles()
+
     def init_trj(self, ro):
         return np.hstack((np.zeros([ro.shape[0], self.init_gap]), ro))
 
@@ -91,21 +95,25 @@ class SimulationManager:
             rollout = self.init_trj(rollout)
             rollout = filter_limits(scale_to_joints(rollout))
             
-            
+            self.env.reset()
+            print("PRE: ")
+            pre = self.env.savePreconditions()
+            print(len(pre))
+            pre[len(pre)] = True
 
-            for t in range(timesteps + self.init_gap):
-
-                if(t==1):
-                    self.env.reset()
-                    print("PRE: ")
-                    self.env.savePreconditions()
+            for t in range(timesteps + self.init_gap):                    
 
                 action = rollout[:, t]
                 obs, reward, done, info = self.env.step(action)
                 rews[episode, t] = reward
             
             print("POST: ")
-            self.env.savePostconditions()
+            post = self.env.savePostconditions()
+            post[len(pre)] = True
+
+            self.arffPrinter.writeArffLine(pre, "preconditions")
+            self.arffPrinter.writeArffLine(post, "effects")
+            self.arffPrinter.writeMaskLine(pre, post)
 
         return rews[:, self.init_gap :]
 
@@ -125,7 +133,6 @@ class ExploreSimulationManager:
         """
         :rollouts: nparray [episode_num, dmp_num, timesteps]
         """
-
         n_episodes, n_joints, timesteps = rollouts.shape
         rews = np.zeros([n_episodes, timesteps + self.init_gap])
 
