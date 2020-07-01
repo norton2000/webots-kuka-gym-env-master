@@ -322,7 +322,7 @@ class WebotsKukaEnv(gym.Env):
     def _jointPositionClassifier(self, joint_positions):
         esito = True;
         for joint_position in joint_positions:
-            esito = esito and (joint_position <= 0.01)
+            esito = esito and (abs(joint_position) <= 0.01)
         return esito
         #return joint_positions == np.zeros(len(joint_positions))
     
