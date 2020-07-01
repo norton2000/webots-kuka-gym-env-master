@@ -26,7 +26,7 @@ class WebotsKukaEnv(gym.Env):
         #self.desired_pos = np.array([-0.3, 0.43, 0.103])
 
         self.objects_initial_positions = {
-            "ciambella":[0.53, 0.015, 0],
+            "ring":[0.53, 0.015, 0],
             "ball":[0.4, 0.025, 0],
         }
 
@@ -162,7 +162,7 @@ class WebotsKukaEnv(gym.Env):
         #obj_pos_array = np.array((obj_pos.x, obj_pos.y, obj_pos.z))
         obj_pos_array = np.array(obj_pos)
         
-        if(object_name=="ciambella"):
+        if(object_name=="ring"):
             finger_distances = [
                 #np.linalg.norm(finger_pos_00_array - obj_pos_array + 0.018),
                 #np.linalg.norm(finger_pos_01_array - obj_pos_array + 0.018 ),
@@ -322,7 +322,7 @@ class WebotsKukaEnv(gym.Env):
     def _jointPositionClassifier(self, joint_positions):
         esito = True;
         for joint_position in joint_positions:
-            esito = esito and (joint_position <= 0.01)
+            esito = esito and (abs(joint_position) <= 0.01)
         return esito
         #return joint_positions == np.zeros(len(joint_positions))
     
