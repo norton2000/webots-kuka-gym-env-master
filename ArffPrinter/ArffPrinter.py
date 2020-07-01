@@ -1,18 +1,17 @@
 class ArffPrinter:
 
-    def __init__(self, n):
-        self.n = n
+    #Quanti sono i files che devi inizializzare?
+    def initFiles(self, n):
+        for i in range(n):
+            effect_filename = self.build_ArffFileName(i, "effects")
+            precond_filename = self.build_ArffFileName(i, "preconditions")
+            mask_filename = self.build_MaskFileName(i)
+            open(mask_filename, "w") #Apertura che serve a resettare cio' che e' scritto sul file
 
-    def initFiles(self):
-        effect_filename = self.build_ArffFileName("effects")
-        precond_filename = self.build_ArffFileName("preconditions")
-        mask_filename = self.build_MaskFileName()
-        open(mask_filename, "w") #Apertura che serve a resettare cio' che e' scritto sul file
+            with open(effect_filename, "w") as fpE:
+                with open(precond_filename, "w") as fpP:
 
-        with open(effect_filename, "w") as fpE:
-            with open(precond_filename, "w") as fpP:
-
-                fpE.write("""@relation effects
+                    fpE.write("""@relation effects
 @attribute s0 real
 @attribute s1 real
 @attribute s2 real
@@ -25,7 +24,7 @@ class ArffPrinter:
 @data
 """)
 
-                fpP.write("""@relation preconditions
+                    fpP.write("""@relation preconditions
 @attribute s0 real
 @attribute s1 real
 @attribute s2 real
@@ -38,16 +37,16 @@ class ArffPrinter:
 @data
 """)
 
-    def build_ArffFileName(self, suffix):
-        return "op" + str(self.n) + "_" + suffix + ".arff"
+    def build_ArffFileName(self, n, suffix):
+        return "op" + str(n) + "_" + suffix + ".arff"
 
-    def build_MaskFileName(self):
-        return "op" + str(self.n) + "_mask.txt"
+    def build_MaskFileName(self, n):
+        return "op" + str(n) + "_mask.txt"
 
 
     ##################################################  METODO DA CHIAMARE PER STAMPARE UNA RIGA SU UNO DEI FILE ARFF #######################################
-    def writeArffLine(self, vect, suffix):
-        nome_file = self.build_ArffFileName(suffix)
+    def writeArffLine(self, n, vect, suffix):
+        nome_file = self.build_ArffFileName(n,suffix)
         with open(nome_file, "a") as fp: 
             self.writeValuesEntry(fp, vect)
             if vect[len(vect)-1]:
@@ -57,8 +56,8 @@ class ArffPrinter:
 
 
     ##################################################  METODO DA CHIAMARE PER STAMPARE UNA RIGA SUL FILE MASK #######################################
-    def writeMaskLine(self, vect_prec, vect_eff):
-        nome_file = self.build_MaskFileName()
+    def writeMaskLine(self, n, vect_prec, vect_eff):
+        nome_file = self.build_MaskFileName(n)
         with open(nome_file, "a") as fp:
             self.writeValuesEntry(fp, vect_prec)
             fp.write(" 0 ")
@@ -81,11 +80,11 @@ class ArffPrinter:
               
 #Metodo main usato per una prova della stampa
 if __name__ == "__main__":
-    printer = ArffPrinter(0)
-    printer.initFiles()
+    printer = ArffPrinter()
+    printer.initFiles(2)
     for i in range(0,10):
         array = [True, False, True, True, True, False]
         array1 = [False, False, False, True, True, True]
-        printer.writeArffLine(array,"preconditions")
-        printer.writeArffLine(array1, "effects")
-        printer.writeMaskLine(array, array1)
+        printer.writeArffLine(0, array,"preconditions")
+        printer.writeArffLine(1, array1, "effects")
+        printer.writeMaskLine(1, array, array1)

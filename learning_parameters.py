@@ -73,8 +73,8 @@ class SimulationManager:
         self.env = env
         self.init_gap = init_gap
 
-        self.arffPrinter = ArffPrinter(0)
-        self.arffPrinter.initFiles()
+        self.arffPrinter = ArffPrinter()
+        self.arffPrinter.initFiles(1)
 
     def init_trj(self, ro):
         return np.hstack((np.zeros([ro.shape[0], self.init_gap]), ro))
@@ -110,9 +110,9 @@ class SimulationManager:
             post = self.env.savePostconditions()
             post[len(post)] = True
 
-            self.arffPrinter.writeArffLine(pre, "preconditions")
-            self.arffPrinter.writeArffLine(post, "effects")
-            self.arffPrinter.writeMaskLine(pre, post)
+            self.arffPrinter.writeArffLine(0, pre, "preconditions")
+            self.arffPrinter.writeArffLine(0, post, "effects")
+            self.arffPrinter.writeMaskLine(0, pre, post)
 
         return rews[:, self.init_gap :]
 
