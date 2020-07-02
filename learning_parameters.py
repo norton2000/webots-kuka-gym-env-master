@@ -44,8 +44,9 @@ bbo_sigma = bbo_sigma_max * np.hstack(
 bbo_sigma_decay_amp = 0.08 #0.04 #0.005 #0.007 #0.01 #0.015  # variable sample variance         #Default 0.0
 bbo_sigma_decay_start = 0                                       #Default 0
 bbo_sigma_decay_period = 0.04 #0.03 #0.025 #0.07 #0.04 #0.01 #0.015 #0.025                                  #Default 0.01
-init_gap = 0                                                   #Default 10
-continue_learning = False                                       #False when start a new Learning
+init_gap = 1                                                   #Default 10
+continue_learning = False                                     #False when start a new Learning
+write_arff_file = False                                       #False when you don't want the arffprinter to write on files
 
 # YOUBOT learning_parameters
 dist_dev_alpha = 0.04 #0.3   #0.16 #0.08 #0.04                                           #Default 0.028

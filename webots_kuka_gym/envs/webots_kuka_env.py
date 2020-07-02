@@ -10,7 +10,6 @@ from learning_parameters import *
 # Import from webots classes
 from controller import Supervisor, Motor, Camera
 
-
 class WebotsKukaEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
@@ -18,6 +17,8 @@ class WebotsKukaEnv(gym.Env):
         self.alpha = alpha
         self.beta = beta
         self.gamma = gamma  #Added
+
+        #self.write_arff_file = write_arff_file
 
         #self.arffPrinter = ArffPrinter(0)
         #self.arffPrinter.initFiles()
@@ -338,7 +339,7 @@ class WebotsKukaEnv(gym.Env):
             values[i+2] = self._desiredPosClassifier(self.get_objects_positions()[obj_name], self.desired_pos)
             i+=3
         values[i] = self._touchSensorsClassifier(obs["TOUCH_SENSORS"])
-        values[i+1] = self._jointPositionClassifier(obs["JOINT_POSITIONS"])
+        values[i+1] = self._jointPositionClassifier(self.get_link_positions())
         print("GIUNTI: " , obs["JOINT_POSITIONS"])
         print (values)
         return values
