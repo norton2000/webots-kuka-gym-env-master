@@ -5,6 +5,7 @@ from gym.utils import seeding
 import numpy as np
 from limits import filter_limits, scale_to_joints
 from learning_parameters import *
+from random import randrange
 #from ArffPrinter import ArffPrinter
 
 # Import from webots classes
@@ -292,6 +293,16 @@ class WebotsKukaEnv(gym.Env):
         self._supervisor.simulationResetPhysics()
         self._supervisor.step(1)
 
+        object_notToGrasp = self._supervisor.getFromDef(self._objects_names[1]) 
+        _translation = object_notToGrasp.getField("translation") 
+        array_pos = []
+        array_pos.append([0.53,0.015,0])        #da cambiare in base all'oggetto da prendere
+        array_pos.append([1,0,1])
+        array_pos.append([-0.15, 0.195, 0])
+        rand = randrange(0,3)
+        new_position = array_pos[rand]
+        _translation.setSFVec3f(new_position)
+
         for link in self._link_names:
             self._link_position_sensors[link].enable(self._timestep)
 
@@ -311,7 +322,8 @@ class WebotsKukaEnv(gym.Env):
 
     def _desiredPosClassifier(self, object_position, desired_pos):
         diff = np.linalg.norm(object_position - desired_pos)
-        return diff<=0.015
+        #return diff<=0.015
+        return diff<=0.03
 
     def _touchSensorsClassifier(self, touch_sensors):
         esito = True;
