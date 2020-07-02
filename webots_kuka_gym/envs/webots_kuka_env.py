@@ -296,7 +296,7 @@ class WebotsKukaEnv(gym.Env):
         object_notToGrasp = self._supervisor.getFromDef(self._objects_names[1]) 
         _translation = object_notToGrasp.getField("translation") 
         array_pos = []
-        array_pos.append([0.53,0.015,0])        #da cambiare in base all'oggetto da prendere
+        array_pos.append(object_notToGrasp.getPosition())        #da cambiare in base all'oggetto da prendere
         array_pos.append([1,0,1])
         array_pos.append([-0.15, 0.195, 0])
         rand = randrange(0,3)
@@ -343,7 +343,7 @@ class WebotsKukaEnv(gym.Env):
         obs = self._get_obs()
         values = {}
         i = 0
-        obj_names = self._objects_names
+        obj_names = self._objects_names.copy()
         obj_names.sort()
         for obj_name in self._objects_names:
             values[i] = self._objectPositionClassifier(self.get_objects_positions()[obj_name], self.objects_initial_positions[obj_name])

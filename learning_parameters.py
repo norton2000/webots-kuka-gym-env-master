@@ -26,7 +26,7 @@ dmp_sigma = 0.05  # standard deviation of each parameters 0.05
 
 # BBO parameters
 bbo_lmb = 0.005# softmax temperature
-bbo_epochs = 50
+bbo_epochs = 20
 bbo_episodes = 20
 bbo_num_dmps = 7 #Original Version 9
 bbo_sigma_max = 0.2                # Default 0.2
