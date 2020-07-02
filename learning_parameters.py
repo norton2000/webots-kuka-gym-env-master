@@ -93,16 +93,19 @@ class SimulationManager:
 
             # simulate with the current joint trajectory to read rewards
             rollout = np.squeeze(rollouts[episode, :, :])
-            rollout = self.init_trj(rollout)
             rollout = filter_limits(scale_to_joints(rollout))
+            rollout = self.init_trj(rollout)
             
             self.env.reset()
-            print("PRE: ")
-            pre = self.env.savePreconditions()
-            pre[len(pre)] = True
+            #print("PRE: ")
+            #pre = self.env.savePreconditions()
+            #pre[len(pre)] = True
 
             for t in range(timesteps + self.init_gap):                    
-
+                if t is 1:
+                    print("PRE: ")
+                    pre = self.env.savePreconditions()
+                    pre[len(pre)] = True
                 action = rollout[:, t]
                 obs, reward, done, info = self.env.step(action)
                 rews[episode, t] = reward

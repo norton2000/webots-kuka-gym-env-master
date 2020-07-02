@@ -41,22 +41,22 @@ class optionsClassifier:
 	
 	def classifier(self, values_pre, values_post):
 		i=0
-		for i in range 5:
+		for i in range(5):
 			esitoPre = scorri_array(values_pre, optionsMat[i*2])
 			values_pre[number_parameters] = esitoPre
 			esitoPost = scorri_array(values_post, optionsMat[(i*2)+1])
 			values_post[number_parameters] = esitoPost
 			arffPrinter.writeArffLine(i, values_pre, "preconditions")
 			arffPrinter.writeArffLine(i, values_post, "effects")
-			if esitoPre and esitoPost
-				arffPrinter.writeMaskLine(i, values_pre, values_post)
+			if esitoPre and esitoPost:
+				self.arffPrinter.writeMaskLine(i, values_pre, values_post)
 
 	def scorri_array(self, arrayValues, arrayConfronto):
 		
 		esito = True
 		i=0
-		for i in range number_parameters:
-			if arrayConfronto[i]
+		for i in range(number_parameters):
+			if arrayConfronto[i]:
 				esito = esito and arrayValues[i]
 
 		return esito
