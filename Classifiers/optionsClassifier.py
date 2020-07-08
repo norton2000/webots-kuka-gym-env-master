@@ -49,6 +49,7 @@ class optionsClassifier:
 	
 	def classifier(self, values_pre, values_post):
 		i=0
+		#print("======================================================== ciao =================")
 		for i in range(5):
 			esitoPre = self.scorri_array(values_pre, optionsMat[i*2])
 			values_pre[number_parameters] = esitoPre
@@ -64,9 +65,13 @@ class optionsClassifier:
 		i=0
 		for i in range(number_parameters):
 			if not arrayConfronto[i] == Flags.Jolly:
-				if arrayConfronto[i]:
+				if arrayConfronto[i] == Flags.true:
 					esito = esito and arrayValues[i]
+					#print("EsitoTrue: ", esito)
+					#print("ValueTrue: ", arrayValues[i])
 				else:
 					esito = esito and not arrayValues[i]
+					#print("EsitoFalse: ", esito)
+					#print("ValueFalse: ", arrayValues[i])
 
 		return esito
