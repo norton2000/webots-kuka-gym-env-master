@@ -50,14 +50,14 @@ continue_learning = False                                     #False when start 
 write_arff_file = False                                       #False when you don't want the arffprinter to write on files
 
 # YOUBOT learning_parameters
-dist_dev_alpha = 0.04 #0.3   #0.16 #0.08 #0.04                                           #Default 0.028
+dist_dev_alpha = 0.04   #0.16    #0.04 #0.3   #0.16 #0.08 #0.04                                           #Default 0.028
 dist_dev_beta = 0.4 #0.6   #0.1                                             #Default 0.1
 dist_dev_gamma = 0.012 #0.023 #0.012                                          #Default 0.012
-alpha = 1e7 #0.01  #1e4#1e5#1e5 #6e5 #1e4 #1e4 # floor distance                               #Default: 1e4
+alpha = 1e7 #1e2 #0.01  #1e4#1e5#1e5 #6e5 #1e4 #1e4 # floor distance                               #Default: 1e4
 beta = 1.1 #0.02  #0.01#0.01 #0.1 #1 #1 #10     # finger_distance                              #Default: 1
 gamma = 0.6 #0.02#1#1e2 #1e2 #5e6 #1e8 #1e5 # touch * finger_distance                      #Default: 1e8
 #max_rew = 25#20#5e1 #5e6 #5e5 #5e9                                              #Default: 5e5
-max_rew = 80 #12
+max_rew = 80 #5e4 #12
 sigma_moving_average = True
 sigma_moving_average_h = 0.2                                    #Default: 0.2
 
@@ -114,8 +114,8 @@ class SimulationManager:
             #self.arffPrinter.writeArffLine(0, pre, "preconditions")
             #self.arffPrinter.writeArffLine(0, post, "effects")
             #self.arffPrinter.writeMaskLine(0, pre, post)
-
-            self.optionsClassifier.classifier(pre, post)  
+            if write_arff_file:
+                self.optionsClassifier.classifier(pre, post)  
 
         return rews[:, self.init_gap :]
 
@@ -199,3 +199,33 @@ class TestSimulationManager(SimulationManager):
                 rews[episode, t] = reward
 
         return rews[:, self.init_gap :], reads
+
+class ResetJointPositionManager:
+    def __init__(self, env):
+        """
+        :env: a openai_ros env
+        """
+        self.env = env
+        self.init_gap = init_gap
+
+    def __call__(self, rollouts):
+        """
+        :rollouts: nparray [episode_num, dmp_num, timesteps]
+        """
+        n_episodes, n_joints, timesteps = rollouts.shape
+        rews = np.zeros([n_episodes, timesteps + self.init_gap])
+
+        for episode in range(n_episodes):
+
+            print("episode %d" % episode)
+
+            # simulate with the current joint trajectory to read rewards
+            rollout = np.zeros([n_joints, timesteps])
+
+            self.env.reset()
+            for t in range(timesteps):
+                action = rollout[:, t]
+                obs, reward, done, info = self.env.step(action)
+                rews[episode, t] = reward
+
+        return rews

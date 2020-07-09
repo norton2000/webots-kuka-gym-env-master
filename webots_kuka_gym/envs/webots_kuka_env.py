@@ -24,7 +24,7 @@ class WebotsKukaEnv(gym.Env):
         #self.arffPrinter = ArffPrinter(0)
         #self.arffPrinter.initFiles()
 
-        self.desired_pos = np.array([-0.15, 0.195, 0])
+        self.desired_pos = np.array([-0.15, 0.185, 0])
         #self.desired_pos = np.array([-0.3, 0.43, 0.103])
 
         self.objects_initial_positions = {
@@ -57,13 +57,13 @@ class WebotsKukaEnv(gym.Env):
         for link in self._link_names:
             self._link_objects[link] = self._supervisor.getMotor(link)
         
-        #Added
+        # Get Touch sensor  (Added)
         self._touch_sensor_names = ["touch sensor1" , "touch sensor2"]
          #Added
         self._touch_sensor_object = {}
         for sensor in self._touch_sensor_names:
             self._touch_sensor_object[sensor] = self._supervisor.getTouchSensor(sensor)
-            self._touch_sensor_object[sensor].enable(10)
+            self._touch_sensor_object[sensor].enable(self._timestep)
 
         # Get sensors
         self._link_position_sensors = {}
@@ -112,7 +112,7 @@ class WebotsKukaEnv(gym.Env):
         return np.array(positions)
 
     def set_link_positions(self, positions):
-        #assert(len(positions)==len(self._link_names))
+        assert(len(positions)==len(self._link_names))
         i = 0
         for link in self._link_names:
             self._link_objects[link].setPosition(positions[i])
@@ -146,43 +146,19 @@ class WebotsKukaEnv(gym.Env):
         finger_pos_01 = self.fingers["TouchSensor2"].getPosition()
         finger_pos_01_array = np.array(finger_pos_01)
 
-        '''
-        finger_pos_00 = self._link_objects["finger1"].getPosition()
-        finger_pos_00_array = np.array(
-            (finger_pos_00.x, finger_pos_00.y, finger_pos_00.z)
-        )
-        finger_pos_01 = self._link_objects["finger2"].getPosition()
-        finger_pos_01_array = np.array(
-            (finger_pos_01.x, finger_pos_01.y, finger_pos_01.z)
-        )
-        
-        finger_pos_unique = self.finger.getPosition()
-        finger_pos_array = np.array(finger_pos_unique)
-        '''
-
         obj_pos = self.get_objects_positions()[object_name]
         #obj_pos_array = np.array((obj_pos.x, obj_pos.y, obj_pos.z))
         obj_pos_array = np.array(obj_pos)
         
         if(object_name=="ring"):
             finger_distances = [
-                #np.linalg.norm(finger_pos_00_array - obj_pos_array + 0.018),
-                #np.linalg.norm(finger_pos_01_array - obj_pos_array + 0.018 ),
-                np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,+0.019]),#-
+                np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,+0.019]),
                 np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0,0.019])
-                #np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,+0.0]),#-
-                #np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0,0.0])
-                #np.linalg.norm(finger_pos_array - obj_pos_array),
             ]
         else:
             finger_distances = [
-                #np.linalg.norm(finger_pos_00_array - obj_pos_array + 0.018),
-                #np.linalg.norm(finger_pos_01_array - obj_pos_array + 0.018 ),
-                np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,+0]),#-
+                np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,+0]),
                 np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0,0])
-                #np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,+0.0]),#-
-                #np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0,0.0])
-                #np.linalg.norm(finger_pos_array - obj_pos_array),
             ]
 
         return np.array(finger_distances).mean()
@@ -197,11 +173,8 @@ class WebotsKukaEnv(gym.Env):
         done = False
         obs = []
 
-        obs = self._get_obs()                       #Added
-        #done = self._is_done(obs)                  
+        obs = self._get_obs()                       #Added           
         reward = self._compute_reward(obs, done)    #Added
-        for sensor in self._touch_sensor_names:         #Added
-           self._touch_sensor_object[sensor].enable(10)   #Added
         self.set_link_positions(action)
         self._supervisor.step(self._timestep)
 
@@ -306,6 +279,9 @@ class WebotsKukaEnv(gym.Env):
         for link in self._link_names:
             self._link_position_sensors[link].enable(self._timestep)
 
+        for sensor in self._touch_sensor_names:
+            self._touch_sensor_object[sensor].enable(self._timestep)
+
     def render(self, mode='human', close=False):
         pass
 
@@ -352,7 +328,7 @@ class WebotsKukaEnv(gym.Env):
             i+=3
         values[i] = self._touchSensorsClassifier(obs["TOUCH_SENSORS"])
         values[i+1] = self._jointPositionClassifier(self.get_link_positions())
-        print("GIUNTI: " , obs["JOINT_POSITIONS"])
+        #print("GIUNTI: " , obs["JOINT_POSITIONS"])
         print (values)
         return values
 
