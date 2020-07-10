@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 from ArffPrinter import ArffPrinter
 import numpy as np
 
-continue_writing = False
+continue_writing = True
 number_options = 5
 number_parameters = 8
 

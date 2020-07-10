@@ -137,6 +137,16 @@ class BBO(object):
         )
         Sigma = self.sigma + delta_sigma
 
+        print("epoch: ", self.epoch)
+        print("decay_amp: ", self.decay_amp)
+        print("epochs: ", self.epochs)
+        print("self.decay_period: ", self.decay_period)
+        print("self.decay_start: ", self.decay_start)
+
+        print("\nDELTA SIGMA: ", delta_sigma)
+        #print("SIGMA: ", self.sigma)
+        print("Sigma + DeltaSigma: ", Sigma)
+
         curr_sigma = Sigma.copy()
         if self.is_sigma_moving_average_active:
             #@curr_sigma *= (1 - np.tanh(self.sigma_moving_average/self.max_sk_rew))
@@ -144,6 +154,7 @@ class BBO(object):
             #curr_sigma *= (1 - np.tanh(0.01*(self.sigma_moving_average/self.max_sk_rew)))
             #curr_sigma *= (1.001 - np.tanh(1*(self.sigma_moving_average/self.max_sk_rew)))
             curr_sigma *= (1.000 - np.tanh(1*(self.sigma_moving_average/self.max_sk_rew)))
+            print("SIGMA MOVING AVERAGE: ", self.sigma_moving_average)
             print(self.sigma_moving_average)
             print(curr_sigma)
 
@@ -244,13 +255,14 @@ class BBO(object):
 
         return Sk
 
-    def iteration(self, explore=True):#iex
+    def iteration(self, explore=False):#iex
         """ Run an iteration
             :param explore: Bool, If the iteration is for training (True)
                 or test (False)
             :return: (rollouts, total value of the iteration)
         """
         self.sample()
+        print(self.theta)
         if explore is True:
             self.thetas = self.theta + self.eps
         else:

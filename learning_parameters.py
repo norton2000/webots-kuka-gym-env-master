@@ -26,11 +26,11 @@ dmp_sigma = 0.05  # standard deviation of each parameters 0.05
 
 # BBO parameters
 bbo_lmb = 0.005# softmax temperature
-bbo_epochs = 20
-bbo_episodes = 20
+bbo_epochs = 15
+bbo_episodes = 25
 bbo_num_dmps = 7 #Original Version 9
 bbo_sigma_max = 0.2                # Default 0.2
-bbo_sigma_arm_scale = 0.001 #0.001 #0.007 #0.001
+bbo_sigma_arm_scale = 0.002 #0.001 #0.007 #0.001
 bbo_sigma_joint_scales =  [bbo_sigma_arm_scale,
                            bbo_sigma_arm_scale,
                            bbo_sigma_arm_scale,
@@ -42,20 +42,20 @@ bbo_sigma = bbo_sigma_max * np.hstack(
         for x in bbo_sigma_joint_scales
     ]
 )  # constant sample variance
-bbo_sigma_decay_amp = 0.08 #0.04 #0.005 #0.007 #0.01 #0.015  # variable sample variance         #Default 0.0
-bbo_sigma_decay_start = 0                                       #Default 0
-bbo_sigma_decay_period = 0.04 #0.03 #0.025 #0.07 #0.04 #0.01 #0.015 #0.025                                  #Default 0.01
+bbo_sigma_decay_amp = 0.04 #0.05 #0.04 #0.08 #0.04 #0.005 #0.007 #0.01 #0.015  # variable sample variance         #Default 0.0
+bbo_sigma_decay_start = 0.13 #0.15 #0.18 #0.2                                       #Default 0
+bbo_sigma_decay_period = 0.065 #0.06 #0.04 #0.025#0.02 #0.03 #0.025 #0.07 #0.04 #0.01 #0.015 #0.025                                  #Default 0.01
 init_gap = 1                                                  #Default 10
-continue_learning = False                                     #False when start a new Learning
+continue_learning = True                                     #False when start a new Learning
 write_arff_file = False                                       #False when you don't want the arffprinter to write on files
 
 # YOUBOT learning_parameters
-dist_dev_alpha = 0.04 #0.3   #0.16 #0.08 #0.04                                           #Default 0.028
-dist_dev_beta = 0.4 #0.6   #0.1                                             #Default 0.1
+dist_dev_alpha = 0.15 #0.3   #0.16 #0.08 #0.04                                           #Default 0.028
+dist_dev_beta = 0.37 #0.6   #0.1                                             #Default 0.1
 dist_dev_gamma = 0.012 #0.023 #0.012                                          #Default 0.012
-alpha = 1e7 #0.01  #1e4#1e5#1e5 #6e5 #1e4 #1e4 # floor distance                               #Default: 1e4
-beta = 1.1 #0.02  #0.01#0.01 #0.1 #1 #1 #10     # finger_distance                              #Default: 1
-gamma = 0.6 #0.02#1#1e2 #1e2 #5e6 #1e8 #1e5 # touch * finger_distance                      #Default: 1e8
+alpha = 0.3 #0.01  #1e4#1e5#1e5 #6e5 #1e4 #1e4 # floor distance                               #Default: 1e4
+beta = 1.0 #0.02  #0.01#0.01 #0.1 #1 #1 #10     # finger_distance                              #Default: 1
+gamma = 1.1 #0.02#1#1e2 #1e2 #5e6 #1e8 #1e5 # touch * finger_distance                      #Default: 1e8
 #max_rew = 25#20#5e1 #5e6 #5e5 #5e9                                              #Default: 5e5
 max_rew = 80 #12
 sigma_moving_average = True

@@ -231,7 +231,7 @@ class WebotsKukaEnv(gym.Env):
         self._touch += touch_distance
 
         #reward = floor_distance + finger_distance + touch_distance
-        reward = finger_distance + touch_distance
+        reward =  floor_distance
 
         self._floor += floor_distance
         self._finger += finger_distance
@@ -297,9 +297,9 @@ class WebotsKukaEnv(gym.Env):
         _translation = object_notToGrasp.getField("translation") 
         array_pos = []
         array_pos.append(object_notToGrasp.getPosition())        #da cambiare in base all'oggetto da prendere
-        array_pos.append([1,0,1])
-        array_pos.append([-0.15, 0.195, 0])
-        rand = randrange(0,3)
+        #array_pos.append([1,0,1])
+        #array_pos.append([-0.15, 0.195, 0])
+        rand = 0#rand = randrange(0,3)
         new_position = array_pos[rand]
         _translation.setSFVec3f(new_position)
 

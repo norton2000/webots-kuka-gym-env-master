@@ -43,6 +43,7 @@ bbo = BBO(
     lmb=bbo_lmb,
     epochs=bbo_epochs,
     sigma_decay_amp=bbo_sigma_decay_amp,
+    sigma_decay_start=bbo_sigma_decay_start,
     sigma_decay_period=bbo_sigma_decay_period,
     softmax=rew_softmax,
     cost_func=SimulationManager(env),
