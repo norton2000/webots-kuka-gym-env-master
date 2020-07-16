@@ -30,6 +30,7 @@ class WebotsKukaEnv(gym.Env):
         self.objects_initial_positions = {
             "ring":[0.53, 0.015, 0],
             "ball":[0.4, 0.025, 0],
+            "box" :[0.5, 0.02, 0]
         }
 
         self._supervisor = Supervisor()
@@ -231,7 +232,7 @@ class WebotsKukaEnv(gym.Env):
         self._touch += touch_distance
 
         #reward = floor_distance + finger_distance + touch_distance
-        reward =  floor_distance
+        reward = floor_distance
 
         self._floor += floor_distance
         self._finger += finger_distance

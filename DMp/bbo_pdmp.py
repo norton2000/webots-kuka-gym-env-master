@@ -255,7 +255,7 @@ class BBO(object):
 
         return Sk
 
-    def iteration(self, explore=False):#iex
+    def iteration(self, explore=True):#iex
         """ Run an iteration
             :param explore: Bool, If the iteration is for training (True)
                 or test (False)
