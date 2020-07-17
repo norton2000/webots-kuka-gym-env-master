@@ -9,6 +9,6 @@
     "\\webots_kuka_gym",
     "\\webots_kuka_gym\\envs"
   ],
-  "SelectedNode": "\\learning_parameters.py",
+  "SelectedNode": "\\webots_kuka_gym\\envs\\webots_kuka_env.py",
   "PreviewInSolutionExplorer": false
 }

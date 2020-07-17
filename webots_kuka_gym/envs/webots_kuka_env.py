@@ -165,7 +165,7 @@ class WebotsKukaEnv(gym.Env):
         #obj_pos_array = np.array((obj_pos.x, obj_pos.y, obj_pos.z))
         obj_pos_array = np.array(obj_pos)
         
-        if(object_name=="ring"):
+        if(object_name=="ring" or object_name=="box"):
             finger_distances = [
                 #np.linalg.norm(finger_pos_00_array - obj_pos_array + 0.018),
                 #np.linalg.norm(finger_pos_01_array - obj_pos_array + 0.018 ),
@@ -232,7 +232,7 @@ class WebotsKukaEnv(gym.Env):
         self._touch += touch_distance
 
         #reward = floor_distance + finger_distance + touch_distance
-        reward = floor_distance
+        reward = finger_distance + touch_distance
 
         self._floor += floor_distance
         self._finger += finger_distance

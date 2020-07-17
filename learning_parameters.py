@@ -37,16 +37,16 @@ bbo_sigma_joint_scales =  [bbo_sigma_arm_scale,
                            bbo_sigma_arm_scale,
                            bbo_sigma_arm_scale,
                            bbo_sigma_arm_scale,
-                           1,1,1]#0.0001,1,1]#0.002,2,2]#0.2,5,5]           #Original Version 1,1,1,1,1]
+                           1,1,1]#0.0001,1,1]#0.002,2,2]#0.2,5,5]    0.012       #Original Version 1,1,1,1,1]
 bbo_sigma = bbo_sigma_max * np.hstack(
     [
         np.ones(dmp_num_theta + 2) * x
         for x in bbo_sigma_joint_scales
     ]
 )  # constant sample variance
-bbo_sigma_decay_amp = 0.020 #0.05 #0.04 #0.08 #0.04 #0.005 #0.007 #0.01 #0.015  # variable sample variance         #Default 0.0
-bbo_sigma_decay_start = 0.17 #0.10 #0.19    #0.15 #0.18 #0.2                                       #Default 0
-bbo_sigma_decay_period = 0.08 #0.036 #0.072      #0.06 #0.04 #0.025#0.02 #0.03 #0.025 #0.07 #0.04 #0.01 #0.015 #0.025                                  #Default 0.01
+bbo_sigma_decay_amp = 0.015 #0.03 #0.020 #0.05 #0.04 #0.08 #0.04 #0.005 #0.007 #0.01 #0.015  # variable sample variance         #Default 0.0
+bbo_sigma_decay_start = 0.1 #0.06 #0.12 #0.10 #0.19    #0.15 #0.18 #0.2                                       #Default 0
+bbo_sigma_decay_period = 0.1 #0.04 #0.08 #0.036 #0.072      #0.06 #0.04 #0.025#0.02 #0.03 #0.025 #0.07 #0.04 #0.01 #0.015 #0.025                                  #Default 0.01
 init_gap = 1                                                  #Default 10
 continue_learning = False                                     #False when start a new Learning
 write_arff_file = False                                       #False when you don't want the arffprinter to write on files
