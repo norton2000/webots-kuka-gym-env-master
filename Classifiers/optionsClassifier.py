@@ -67,11 +67,7 @@ class optionsClassifier:
 			if not arrayConfronto[i] == Flags.Jolly:
 				if arrayConfronto[i] == Flags.true:
 					esito = esito and arrayValues[i]
-					#print("EsitoTrue: ", esito)
-					#print("ValueTrue: ", arrayValues[i])
 				else:
 					esito = esito and not arrayValues[i]
-					#print("EsitoFalse: ", esito)
-					#print("ValueFalse: ", arrayValues[i])
 
 		return esito
