@@ -137,9 +137,24 @@ class BBO(object):
         )
         Sigma = self.sigma + delta_sigma
 
+        print("epoch: ", self.epoch)
+        print("decay_amp: ", self.decay_amp)
+        print("epochs: ", self.epochs)
+        print("self.decay_period: ", self.decay_period)
+        print("self.decay_start: ", self.decay_start)
+
+        print("\nDELTA SIGMA: ", delta_sigma)
+        #print("SIGMA: ", self.sigma)
+        print("Sigma + DeltaSigma: ", Sigma)
+
         curr_sigma = Sigma.copy()
         if self.is_sigma_moving_average_active:
-            curr_sigma *= (1 - np.tanh(self.sigma_moving_average/self.max_sk_rew))
+            #@curr_sigma *= (1 - np.tanh(self.sigma_moving_average/self.max_sk_rew))
+            #curr_sigma *= (1 - np.tanh(0.05*(self.sigma_moving_average/self.max_sk_rew)))
+            #curr_sigma *= (1 - np.tanh(0.01*(self.sigma_moving_average/self.max_sk_rew)))
+            #curr_sigma *= (1.001 - np.tanh(1*(self.sigma_moving_average/self.max_sk_rew)))
+            curr_sigma *= (1.000 - np.tanh(1*(self.sigma_moving_average/self.max_sk_rew)))
+            print("SIGMA MOVING AVERAGE: ", self.sigma_moving_average)
             print(self.sigma_moving_average)
             print(curr_sigma)
 
@@ -159,13 +174,26 @@ class BBO(object):
         self.theta += np.sum(self.eps * probs, 0)
 
     def set_weights(self, target_rollout):
-        rng = self.num_dmp_params + 2
+        
+        #@
+        '''
+        rng = self.num_dmp_params
+        for idx, dmp in enumerate(self.dmps):
+            dmp[0].generate_weights(target_rollout[idx, :])
+            dmp_theta = self.theta[(idx * rng) : ((idx) * rng)]
+            dmp_theta[1:0] = dmp[0].theta.ravel()
+            dmp_theta[0] = dmp[0].s
+            dmp_theta[-1] = dmp[0].g
+        '''
+        #rng = self.num_dmp_params + 2
+        '''
         for idx, dmp in enumerate(self.dmps):
             dmp[0].generate_weights(target_rollout[idx, :])
             dmp_theta = self.theta[(idx * rng) : ((idx + 1) * rng)]
             dmp_theta[1:-1] = dmp[0].theta.ravel()
             dmp_theta[0] = dmp[0].s
             dmp_theta[-1] = dmp[0].g
+        '''
 
     def rollouts(self, thetas):
         """ Produce a rollout
@@ -227,13 +255,14 @@ class BBO(object):
 
         return Sk
 
-    def iteration(self, explore=True):
+    def iteration(self, explore=True):#iex
         """ Run an iteration
             :param explore: Bool, If the iteration is for training (True)
                 or test (False)
             :return: (rollouts, total value of the iteration)
         """
         self.sample()
+        print(self.theta)
         if explore is True:
             self.thetas = self.theta + self.eps
         else:
