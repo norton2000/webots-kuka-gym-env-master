@@ -6,25 +6,34 @@ from __future__ import unicode_literals
 
 from ArffPrinter import ArffPrinter
 import numpy as np
+from enum import Enum
+
+class Flags(Enum):
+    true = True
+    false = False
+    Jolly = None
 
 continue_writing = True
 number_options = 5
 number_parameters = 8
 
-optionsMat = [[True,False,False,False,False,False,False,True], #ball_grasp_array_pre
-			  [False,True,False,False,False,False,True,False], #ball_grasp_array_post
+############################## SIGNIFICATO SEMANTICO DELLE VARIABILI ###################################
+# s = [PALLA_POS_PRESA, PINZE_VICINE_PALLA, PALLA_CARICATA, ANELLO_POS_PRESSA, PINZE_VICINO_ANELLO, ANELLO_CARICATO, TOUCH_SENSOR_ATTTIVI, BRCCIO_POS_DEFAULT]
 
-			  [False,False,False,True,False,False,False,True], #ring_grasp_pre
-			  [False,False,False,False,True,False,True,False], #ring_grasp_post
+optionsMat = [[Flags.true,Flags.false,Flags.false,Flags.Jolly,Flags.false,Flags.Jolly,Flags.false,Flags.true], #ball_grasp_array_pre
+			  [Flags.Jolly,Flags.true,Flags.false,Flags.Jolly,Flags.false,Flags.Jolly,Flags.true,Flags.false], #ball_grasp_array_post
 
-			  [False,True,False,False,False,False,True,False], #ball_release_pre
-			  [False,False,True,False,False,False,False,False], #ball_release_post
+			  [Flags.Jolly,Flags.false,Flags.Jolly,Flags.true,Flags.false,Flags.false,Flags.false,Flags.true], #ring_grasp_pre
+			  [Flags.Jolly,Flags.false,Flags.Jolly,Flags.Jolly,Flags.true,Flags.false,Flags.true,Flags.false], #ring_grasp_post
 
-			  [False,False,False,False,True,False,True,False], #ring_release_pre
-			  [False,False,False,False,False,True,False,False], #ring_release_post
+			  [Flags.Jolly,Flags.true,Flags.false,Flags.Jolly,Flags.false,Flags.Jolly,Flags.true,Flags.false], #ball_release_pre
+			  [Flags.false,Flags.false,Flags.true,Flags.Jolly,Flags.false,Flags.Jolly,Flags.false,Flags.Jolly], #ball_release_post
 
-			  [False,False,False,False,False,False,False,False], #get_initial_pos_pre
-			  [False,False,False,False,False,False,False,True]] #get_initial_pos_post
+			  [Flags.Jolly,Flags.false,Flags.Jolly,Flags.Jolly,Flags.true,Flags.false,Flags.true,Flags.false], #ring_release_pre
+			  [Flags.Jolly,Flags.false,Flags.Jolly,Flags.false,Flags.false,Flags.true,Flags.false,Flags.Jolly], #ring_release_post
+
+			  [Flags.Jolly,Flags.Jolly,Flags.Jolly,Flags.Jolly,Flags.Jolly,Flags.Jolly,Flags.false,Flags.false], #get_initial_pos_pre
+			  [Flags.Jolly,Flags.Jolly,Flags.Jolly,Flags.Jolly,Flags.Jolly,Flags.Jolly,Flags.false,Flags.true]] #get_initial_pos_post
 
 
 class optionsClassifier:
@@ -40,6 +49,7 @@ class optionsClassifier:
 	
 	def classifier(self, values_pre, values_post):
 		i=0
+		#print("======================================================== ciao =================")
 		for i in range(5):
 			esitoPre = self.scorri_array(values_pre, optionsMat[i*2])
 			values_pre[number_parameters] = esitoPre
@@ -54,7 +64,10 @@ class optionsClassifier:
 		esito = True
 		i=0
 		for i in range(number_parameters):
-			if arrayConfronto[i]:
-				esito = esito and arrayValues[i]
+			if not arrayConfronto[i] == Flags.Jolly:
+				if arrayConfronto[i] == Flags.true:
+					esito = esito and arrayValues[i]
+				else:
+					esito = esito and not arrayValues[i]
 
 		return esito
