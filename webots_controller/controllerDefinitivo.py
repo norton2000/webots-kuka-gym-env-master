@@ -22,13 +22,17 @@ from learning_parameters import *
 #rospy.init_node("youbot_rl", anonymous=True, log_level=rospy.ERROR)
 env = gym.make('webots-kuka-v0')
 #env.obj_to_grasp = object_to_grasp  # otre or cube
-objects = ["box"]
+objects = ["ball", "ring"]
 env.set_objects_names(objects)
+
+#finger_names = ["TouchSensor1", "TouchSensor2"]
+#env.set_fingers_names(finger_names)
 
 #env.gazebo.set_physics_parameters(time_step, update_rate, solver_iter)
 #env.speed_up_factor = time_step * update_rate
 env.set_timestep_simulation(128) #by me
 env.reset()
+
 
 # the BBO object
 bbo = BBO(
@@ -59,6 +63,7 @@ if continue_learning is True:
     bbo.theta = weights.copy()
 else:
     target_trajectory = np.load("target_trajectory.npy")
+    target_trajectory = np.zeros(108)
     bbo.set_weights(scale_from_joints(target_trajectory.T))
 
 # BBO learning iterations
@@ -89,3 +94,7 @@ for k in range(bbo_epochs):
     np.save("Sk", Sks[:(k+1),:])
     np.save("bbo_thetas", bbo.thetas)
     print("{:#4d} {:10.4f} -- {}".format(k, rew[k], end - start))
+plt.plot(rew)
+plt.ylabel("Reward")
+plt.show()
+print("Rewards", rew)

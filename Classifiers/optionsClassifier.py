@@ -13,7 +13,7 @@ class Flags(Enum):
     false = False
     Jolly = None
 
-continue_writing = False
+continue_writing = True
 number_options = 5
 number_parameters = 8
 

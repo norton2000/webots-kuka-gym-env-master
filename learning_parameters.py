@@ -78,30 +78,34 @@ class SimulationManager:
         """
         n_episodes, n_joints, timesteps = rollouts.shape
         rews = np.zeros([n_episodes, timesteps + self.init_gap])
+        #rewsOfEpisodes = np.zeros([n_episodes])
 
         for episode in range(n_episodes):
-            
+
             print("episode %d" % episode)
 
             # simulate with the current joint trajectory to read rewards
             rollout = np.squeeze(rollouts[episode, :, :])
             rollout = filter_limits(scale_to_joints(rollout))
             rollout = self.init_trj(rollout)
-            
+
             self.env.reset()
 
-            for t in range(timesteps + self.init_gap):                    
+            for t in range(timesteps + self.init_gap):
                 if t is 1:
                     pre = self.env._getValuesFromSensors()
                 action = rollout[:, t]
                 obs, reward, done, info = self.env.step(action)
                 rews[episode, t] = reward
-            
+                #rewsOfEpisodes[episode] = np.sum(rews[episode,])
+
             post = self.env._getValuesFromSensors()
 
             if write_arff_file:
-                self.optionsClassifier.classifier(pre, post)  
+                self.optionsClassifier.classifier(pre, post)
 
+        #plt.plot(rewsOfEpisodes)
+        #print(rewsOfEpisodes)
         return rews[:, self.init_gap :]
 
 

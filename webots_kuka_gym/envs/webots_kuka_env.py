@@ -24,6 +24,7 @@ class WebotsKukaEnv(gym.Env):
         self.objects_initial_positions = {
             "ring":[0.53, 0.015, 0],
             "ball":[0.4, 0.025, 0],
+            "box" :[0.5, 0.02, 0]
         }
 
         self._supervisor = Supervisor()
@@ -50,7 +51,7 @@ class WebotsKukaEnv(gym.Env):
         self._link_objects = {}
         for link in self._link_names:
             self._link_objects[link] = self._supervisor.getMotor(link)
-        
+
         # Get Touch sensor  (Added)
         self._touch_sensor_names = ["touch sensor1" , "touch sensor2"]
          #Added
@@ -130,7 +131,7 @@ class WebotsKukaEnv(gym.Env):
         return np.array(state)
 
     def object_finger_distance(self, object_name):
-        
+
         finger_pos_00 = self.fingers["TouchSensor1"].getPosition()
         finger_pos_00_array = np.array(finger_pos_00)
 
@@ -139,8 +140,8 @@ class WebotsKukaEnv(gym.Env):
 
         obj_pos = self.get_objects_positions()[object_name]
         obj_pos_array = np.array(obj_pos)
-        
-        if(object_name=="ring"):
+
+        if(object_name=="ring" or object_name=="box"):
             finger_distances = [
                 np.linalg.norm(finger_pos_00_array - obj_pos_array + [0,0,+0.019]),
                 np.linalg.norm(finger_pos_01_array - obj_pos_array + [0,0,0.019])
@@ -154,8 +155,8 @@ class WebotsKukaEnv(gym.Env):
         return np.array(finger_distances).mean()
 
     def randomizeEnvironment(self):
-        object_notToGrasp = self._supervisor.getFromDef(self._objects_names[1]) 
-        _translation = object_notToGrasp.getField("translation") 
+        object_notToGrasp = self._supervisor.getFromDef(self._objects_names[1])
+        _translation = object_notToGrasp.getField("translation")
         array_pos = []
         array_pos.append(object_notToGrasp.getPosition())
         array_pos.append([1,0,1])
@@ -174,7 +175,7 @@ class WebotsKukaEnv(gym.Env):
         done = False
         obs = []
 
-        obs = self._get_obs()          
+        obs = self._get_obs()
         reward = self._compute_reward(obs, done)
         self.set_link_positions(action)
         self._supervisor.step(self._timestep)
@@ -196,7 +197,7 @@ class WebotsKukaEnv(gym.Env):
         )
 
         touch = self.gamma * sensor_mean
-        
+
         touch_distance = touch * np.exp(
             -(self.object_finger_distance(self._objects_names[0]) ** 2)
             / (2 * dist_dev_gamma ** 2)
@@ -247,7 +248,7 @@ class WebotsKukaEnv(gym.Env):
 
 
     def reset(self):
-           
+
         #print("Reset")
 
         #@
@@ -301,7 +302,7 @@ class WebotsKukaEnv(gym.Env):
         for joint_position in joint_positions:
             esito = esito and (abs(joint_position) <= 0.01)
         return esito
-    
+
     def _getValuesFromSensors(self):
         obs = self._get_obs()
         values = {}
