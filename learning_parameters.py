@@ -20,11 +20,11 @@ dmp_sigma = 0.05  # standard deviation of each parameters 0.05
 
 # BBO parameters
 bbo_lmb = 0.005
-bbo_epochs = 20
-bbo_episodes = 20
+bbo_epochs = 30
+bbo_episodes = 25
 bbo_num_dmps = 7
 bbo_sigma_max = 0.2
-bbo_sigma_arm_scale = 0.001
+bbo_sigma_arm_scale = 0.0017
 bbo_sigma_joint_scales =  [bbo_sigma_arm_scale,
                            bbo_sigma_arm_scale,
                            bbo_sigma_arm_scale,
@@ -36,20 +36,20 @@ bbo_sigma = bbo_sigma_max * np.hstack(
         for x in bbo_sigma_joint_scales
     ]
 )  # constant sample variance
-bbo_sigma_decay_amp = 0.08          # variable sample variance
-bbo_sigma_decay_start = 0
-bbo_sigma_decay_period = 0.04
+bbo_sigma_decay_amp = 0.015          # variable sample variance
+bbo_sigma_decay_start = 0.1
+bbo_sigma_decay_period = 0.1
 init_gap = 1
 continue_learning = False                                    #False when start a new Learning
 write_arff_file = False                                      #False when you don't want the arffprinter to write on files
 
 # YOUBOT learning_parameters
-dist_dev_alpha = 0.04
-dist_dev_beta = 0.4
+dist_dev_alpha = 0.15
+dist_dev_beta = 0.37
 dist_dev_gamma = 0.012
-alpha = 1e7                     # floor distance
-beta = 1.1                      # finger_distance
-gamma = 0.6                     # touch_distance
+alpha = 0.3                     # floor distance
+beta = 1                        # finger_distance
+gamma = 1.5                     # touch_distance
 max_rew = 80
 sigma_moving_average = True
 sigma_moving_average_h = 0.2
