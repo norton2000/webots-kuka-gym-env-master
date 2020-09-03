@@ -40,8 +40,8 @@ bbo_sigma_decay_amp = 0.08          # variable sample variance
 bbo_sigma_decay_start = 0
 bbo_sigma_decay_period = 0.04
 init_gap = 1
-continue_learning = False                                     #False when start a new Learning
-write_arff_file = False                                       #False when you don't want the arffprinter to write on files
+continue_learning = False                                    #False when start a new Learning
+write_arff_file = False                                      #False when you don't want the arffprinter to write on files
 
 # YOUBOT learning_parameters
 dist_dev_alpha = 0.04
