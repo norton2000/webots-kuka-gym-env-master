@@ -1817,7 +1817,7 @@ Robot {
       0 0 0
     ]
   }
-  controller "my_controller_learning_prova"
+  controller "controller_youbot"
   supervisor TRUE
 }
 Viewpoint {

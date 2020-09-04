@@ -205,8 +205,8 @@ class WebotsKukaEnv(gym.Env):
         self._num_rew += 1
         self._touch += touch_distance
 
-        #reward = floor_distance + finger_distance + touch_distance
-        reward = finger_distance + touch_distance
+        #reward = floor_distance                                                #Per spostamento
+        reward = finger_distance + touch_distance                               #Per presa
 
         self._floor += floor_distance
         self._finger += finger_distance
