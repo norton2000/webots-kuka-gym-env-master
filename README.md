@@ -16,7 +16,6 @@ Se si vuole imparare la presa di un oggetto presente nel mondo e posto davanti a
 All'interno della cartella webots_controller è presente sia il controllore da utilizzare su Webots (/controllers/controller_youbot/controller_youbot.py), sia tutti i file con i dati dell'apprendimento fatto finora (da inserire, insieme al target_trajectory.npy, nella stessa directory del controllore).
 I file contenenti i dati raccolti per le prese effettuate si trovano all'interno della cartella /Prese, suddivise prima per gli oggetti su cui sono stati effettuati i test di presa, poi per le prese effettuate. (Presa1 -> Afferra l'oggetto; Trasporto1 -> Posa l'oggetto afferrato nel vano).
 
-Per continuare l'apprendimento, utilizzando i dati già raccolti, è necessario modficare la varibile continue_learning nel file learning_parameters.py impostandola a True
 
 -Cambiare i flag-
 Per effettuare correttamente la sperimentazione dell'apprendimento delle azioni e la raccolta dei dati (file .arff) è necessario utilizzare i seguenti flag nel modo seguente:
